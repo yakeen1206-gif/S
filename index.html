@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday Raghul!</title>
+  <!-- Google Fonts for stylish romantic typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #ffe6eb 0%, #ffc0cb 100%);
+      transition: background 1.5s ease;
+    }
+
+    .scene {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+      text-align: center;
+      padding: 20px;
+    }
+    .scene.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Scene 1: Bow & Heart */
+    #heart-target {
+      font-size: 75px;
+      animation: pulse 1.2s infinite alternate ease-in-out;
+      margin-bottom: 80px;
+      cursor: pointer;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(255, 64, 129, 0.4)); }
+      100% { transform: scale(1.25); filter: drop-shadow(0 0 25px rgba(255, 0, 100, 0.8)); }
+    }
+    #arrow {
+      position: absolute;
+      bottom: 120px;
+      font-size: 45px;
+      transform: rotate(-45deg);
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), bottom 0.4s ease-in;
+    }
+    .instruction-text {
+      font-size: 1.1rem;
+      color: #9c27b0;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+
+    /* Scene 2: Cake & Celebration */
+    .bday-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      color: #d81b60;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .cake-container {
+      font-size: 100px;
+      position: relative;
+      animation: float 2.5s ease-in-out infinite alternate;
+    }
+    @keyframes float {
+      from { transform: translateY(0px); }
+      to { transform: translateY(-12px); }
+    }
+    .tap-hint {
+      margin-top: 35px;
+      font-size: 0.95rem;
+      color: #777;
+      animation: blink 1.5s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* Scene 3: Singing Cats */
+    .cats-chorus {
+      display: flex;
+      gap: 15px;
+      font-size: 65px;
+      margin-bottom: 20px;
+    }
+    .cat {
+      display: inline-block;
+      animation: sing 0.6s infinite alternate ease-in-out;
+    }
+    .cat:nth-child(2) { animation-delay: 0.2s; }
+    .cat:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes sing {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-15px) scale(1.1); }
+    }
+    .notes {
+      font-size: 28px;
+      margin-bottom: 15px;
+      animation: pulse 1s infinite alternate;
+    }
+
+    /* Scene 4: Balloons */
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      font-size: 60px;
+      cursor: pointer;
+      transition: transform 0.15s ease-out;
+      animation: floatUp 8s linear infinite;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-120vh) rotate(15deg); }
+    }
+
+    /* Scene 5: Black Background & Final Message */
+    #scene-5 {
+      background: #000;
+    }
+    .love-message {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4.5rem;
+      color: #ff4081;
+      text-shadow: 0 0 20px #ff1744, 0 0 40px #ff4081;
+      opacity: 0;
+      transform: scale(0.85);
+      transition: opacity 2s ease, transform 2s ease;
+    }
+    .love-message.revealed {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCENE 1: SHOOT BOW TO HEART -->
+  <div id="scene-1" class="scene active">
+    <div id="heart-target">💖</div>
+    <div id="arrow">🏹</div>
+    <p class="instruction-text">Tap the bow to shoot Cupid's arrow!</p>
+  </div>
+
+  <!-- SCENE 2: CAKE & MESSAGE -->
+  <div id="scene-2" class="scene">
+    <h1 class="bday-title">Happy Birthday, Raghul!</h1>
+    <div class="cake-container">🎂</div>
+    <p class="tap-hint">Tap anywhere on the screen ✨</p>
+  </div>
+
+  <!-- SCENE 3: SINGING CATS -->
+  <div id="scene-3" class="scene">
+    <div class="notes">🎵 🎶 🐱 🎶 🎵</div>
+    <div class="cats-chorus">
+      <span class="cat">🐱</span>
+      <span class="cat">😸</span>
+      <span class="cat">😻</span>
+    </div>
+    <h2 style="color: #6a1b9a;">Meow meow happy birthday to you!</h2>
+    <p class="tap-hint">Tap the screen to continue 🎈</p>
+  </div>
+
+  <!-- SCENE 4: BALLOON BURST -->
+  <div id="scene-4" class="scene">
+    <h3 style="color: #c2185b; margin-top: 10px;">Pop all the balloons! 🎈</h3>
+  </div>
+
+  <!-- SCENE 5: FINAL I LOVE YOU -->
+  <div id="scene-5" class="scene">
+    <div id="final-text" class="love-message">I love you</div>
+  </div>
+
+  <script>
+    // Audio synthesizer for melody and popping sounds without external assets
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playTone(freq, duration, type = 'sine') {
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function switchScene(fromId, toId) {
+      document.getElementById(fromId).classList.remove('active');
+      document.getElementById(toId).classList.add('active');
+    }
+
+    // --- Scene 1: Shoot Arrow ---
+    const arrow = document.getElementById('arrow');
+    const heart = document.getElementById('heart-target');
+    let arrowShot = false;
+
+    arrow.addEventListener('click', () => {
+      if (arrowShot) return;
+      arrowShot = true;
+      playTone(587.33, 0.2); // D5 shoot sound
+      
+      arrow.style.bottom = '55%';
+      arrow.style.transform = 'scale(0.8) rotate(-45deg)';
+
+      setTimeout(() => {
+        confetti({ particleCount: 80, spread: 70, origin: { y: 0.4 } });
+        playTone(880, 0.4);
+        setTimeout(() => {
+          switchScene('scene-1', 'scene-2');
+          confetti({ particleCount: 120, spread: 100, origin: { y: 0.5 } });
+        }, 700);
+      }, 400);
+    });
+
+    // --- Scene 2: Cake Tap ---
+    document.getElementById('scene-2').addEventListener('click', () => {
+      switchScene('scene-2', 'scene-3');
+      playMelody();
+    });
+
+    // --- Scene 3: Singing Cats ---
+    function playMelody() {
+      const notes = [261, 261, 293, 261, 349, 329]; // "Happy Birthday to you" notes
+      notes.forEach((freq, idx) => {
+        setTimeout(() => playTone(freq, 0.35, 'triangle'), idx * 350);
+      });
+    }
+
+    document.getElementById('scene-3').addEventListener('click', () => {
+      switchScene('scene-3', 'scene-4');
+      setupBalloons();
+    });
+
+    // --- Scene 4: Pop Balloons ---
+    const balloonEmojis = ['🎈', '💖', '🎈', '✨', '🎈', '🎉', '🎈'];
+    let remainingBalloons = 10;
+
+    function setupBalloons() {
+      const scene4 = document.getElementById('scene-4');
+      for (let i = 0; i < remainingBalloons; i++) {
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        b.innerText = balloonEmojis[i % balloonEmojis.length];
+        b.style.left = Math.random() * 80 + 10 + '%';
+        b.style.animationDelay = (Math.random() * 2) + 's';
+        b.style.animationDuration = (5 + Math.random() * 3) + 's';
+
+        b.addEventListener('click', (e) => {
+          e.stopPropagation();
+          playTone(400 + Math.random() * 300, 0.1, 'sawtooth');
+          confetti({
+            particleCount: 25,
+            spread: 50,
+            origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight }
+          });
+          b.remove();
+          remainingBalloons--;
+          if (remainingBalloons <= 0) {
+            triggerFinalScene();
+          }
+        });
+        scene4.appendChild(b);
+      }
+    }
+
+    // --- Scene 5: Blackout & "I love you" ---
+    function triggerFinalScene() {
+      document.body.style.background = '#000';
+      switchScene('scene-4', 'scene-5');
+      setTimeout(() => {
+        document.getElementById('final-text').classList.add('revealed');
+        playTone(440, 1.2, 'sine');
+      }, 600);
+    }
+  </script>
+</body>
+  </html>
